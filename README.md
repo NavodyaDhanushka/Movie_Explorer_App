@@ -2,8 +2,8 @@
 
 A responsive web app for searching movies, viewing details and trailers, and discovering trending films. Built with React and powered by the [TMDb API](https://developers.themoviedb.org/3).
 
-**Live demo:** <https://movie-explorer-app-hazel-five.vercel.app>
-**Repository:** <https://github.com/NavodyaDhanushka/Movie_Explorer_App.git>
+- **Live demo:** <https://movie-explorer-app-hazel-five.vercel.app>
+- **Repository:** <https://github.com/NavodyaDhanushka/Movie_Explorer_App.git>
  
 ---
 
