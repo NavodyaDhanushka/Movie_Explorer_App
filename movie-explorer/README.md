@@ -1,70 +1,156 @@
-# Getting Started with Create React App
+# 🎬 Movie Explorer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A responsive web app for searching movies, viewing details and trailers, and discovering trending films. Built with React and powered by the [TMDb API](https://developers.themoviedb.org/3).
 
-## Available Scripts
+**Live demo:** <https://your-app-name.vercel.app>
+**Repository:** <https://gitlab.com/your-username/movie-explorer>
+ 
+---
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- **Login** with username and password (demo authentication, see [Design Notes](#design-notes))
+- **Search bar** with debounced input to find movies by name
+- **Poster grid** showing title, release year and rating for each movie
+- **Movie details page** with overview, genres, runtime, cast and an embedded **YouTube trailer**
+- **Trending section** showing this week's popular movies from TMDb
+- **Light / dark mode**, remembered between visits
+- **Infinite scrolling** for search results
+- **Load More button** for trending movies
+- **Filters** by genre, release year and minimum rating
+- **Favorites** list saved locally in the browser
+- **Last searched movie** saved in local storage and restored on the next visit
+- **Graceful error handling** with friendly messages and a Retry button
+- **Mobile-first responsive design**
+## Tech Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+| Area | Technology |
+| --- | --- |
+| Framework | React (Create React App) |
+| UI library | Material-UI (MUI) |
+| Routing | React Router |
+| HTTP client | Axios |
+| State management | React Context API |
+| Persistence | Browser localStorage |
+| Data source | TMDb API v3 |
+| Deployment | Vercel / Netlify |
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Getting Started
 
-### `npm test`
+### Prerequisites
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Node.js 18 or later
+- A free TMDb API key: create an account at [themoviedb.org](https://www.themoviedb.org/) and get the key from **Settings → API**
+### Installation
 
-### `npm run build`
+```bash
+# 1. Clone the repository
+git clone https://gitlab.com/your-username/movie-explorer.git
+cd movie-explorer
+ 
+# 2. Install dependencies
+npm install
+ 
+# 3. Create your environment file
+cp .env.example .env.local
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Open `.env.local` and add your key:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+REACT_APP_TMDB_API_KEY=your_tmdb_api_key_here
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+# 4. Start the development server
+npm start
+```
 
-### `npm run eject`
+The app runs at <http://localhost:3000>. Restart the server after changing `.env.local`.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Logging in
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Enter any username and a password of at least 4 characters.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Available Scripts
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+| Command | Description |
+| --- | --- |
+| `npm start` | Runs the app in development mode |
+| `npm run build` | Creates an optimized production build in `build/` |
 
-## Learn More
+## Project Structure
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+src/
+├── api/
+│   └── tmdb.js               # Axios instance, API calls, error messages
+├── context/
+│   ├── AuthContext.js        # Login state
+│   ├── ColorModeContext.js   # Light/dark theme
+│   └── MovieContext.js       # Favorites, last search, genres
+├── components/
+│   ├── Navbar.js
+│   ├── SearchBar.js
+│   ├── FilterBar.js
+│   ├── MovieCard.js
+│   ├── MovieGrid.js
+│   └── ProtectedRoute.js
+├── pages/
+│   ├── Login.js
+│   ├── Home.js               # Search, trending, filters, scrolling
+│   ├── MovieDetails.js
+│   └── Favorites.js
+├── App.js                    # Routes
+└── index.js                  # Providers and entry point
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## API Usage
 
-### Code Splitting
+All requests go through a single Axios instance in `src/api/tmdb.js`, which attaches the API key automatically.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+| Purpose | Endpoint |
+| --- | --- |
+| Trending movies | `GET /trending/movie/week` |
+| Search movies | `GET /search/movie?query=...&page=...` |
+| Movie details, cast and videos | `GET /movie/{id}?append_to_response=credits,videos` |
+| Genre list (for filters) | `GET /genre/movie/list` |
 
-### Analyzing the Bundle Size
+Search and trending results are paginated. Each request loads one page, and the next page is appended when the user scrolls (search) or clicks **Load More** (trending).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Errors are converted to user-friendly messages for network failures, invalid API keys (401) and missing resources (404), with a **Retry** option on the home page.
 
-### Making a Progressive Web App
+## State Management
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+The app uses the **React Context API** with three providers:
 
-### Advanced Configuration
+- **AuthContext** holds the logged-in user
+- **ColorModeContext** holds the theme mode and toggle
+- **MovieContext** holds favorites, the last search term and the genre list
+  **Local storage keys:** `user`, `mode`, `favorites`, `lastSearch`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Deployment
 
-### Deployment
+The app is deployed on Vercel. To deploy your own copy:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+1. Push the repository to GitLab / GitHub
+2. Import the project in [Vercel](https://vercel.com) (or Netlify)
+3. Add the environment variable `REACT_APP_TMDB_API_KEY`
+4. Deploy
+   `vercel.json` and `public/_redirects` contain the rewrite rules that let deep links (for example `/favorites`) and page refreshes work in a single-page app.
 
-### `npm run build` fails to minify
+## Design Notes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- **Frontend-only:** TMDb supplies all the movie data, so no custom backend is needed.
+- **Demo login:** With no server, credentials cannot be verified. The login only validates the input and stores the session in localStorage.
+- **Filters** are applied client-side to the movies already loaded.
+- **API key exposure:** A key used in a client-side app is visible in the browser. For production, requests should go through a backend proxy.
+## Possible Improvements
+
+- Real authentication (JWT) with a backend, so favorites sync across devices
+- Backend proxy to keep the API key private
+- Server-side filtering using TMDb's `/discover/movie` endpoint
+- Unit tests with React Testing Library
+## Acknowledgements
+
+This product uses the TMDb API but is not endorsed or certified by TMDb.
