@@ -2,8 +2,8 @@
 
 A responsive web app for searching movies, viewing details and trailers, and discovering trending films. Built with React and powered by the [TMDb API](https://developers.themoviedb.org/3).
 
-**Live demo:** <https://your-app-name.vercel.app>
-**Repository:** <https://gitlab.com/your-username/movie-explorer>
+**Live demo:** <https://movie-explorer-app-hazel-five.vercel.app>
+**Repository:** <https://github.com/NavodyaDhanushka/Movie_Explorer_App.git>
  
 ---
 
@@ -33,7 +33,7 @@ A responsive web app for searching movies, viewing details and trailers, and dis
 | State management | React Context API |
 | Persistence | Browser localStorage |
 | Data source | TMDb API v3 |
-| Deployment | Vercel / Netlify |
+| Deployment | Vercel  |
 
 ## Getting Started
 
@@ -45,7 +45,7 @@ A responsive web app for searching movies, viewing details and trailers, and dis
 
 ```bash
 # 1. Clone the repository
-git clone https://gitlab.com/your-username/movie-explorer.git
+git clone https://github.com/NavodyaDhanushka/Movie_Explorer_App.git
 cd movie-explorer
  
 # 2. Install dependencies
@@ -134,7 +134,7 @@ The app uses the **React Context API** with three providers:
 The app is deployed on Vercel. To deploy your own copy:
 
 1. Push the repository to GitLab / GitHub
-2. Import the project in [Vercel](https://vercel.com) (or Netlify)
+2. Import the project in [Vercel](https://vercel.com)
 3. Add the environment variable `REACT_APP_TMDB_API_KEY`
 4. Deploy
    `vercel.json` and `public/_redirects` contain the rewrite rules that let deep links (for example `/favorites`) and page refreshes work in a single-page app.
