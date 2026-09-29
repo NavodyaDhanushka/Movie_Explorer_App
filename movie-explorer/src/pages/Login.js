@@ -22,6 +22,10 @@ export default function Login() {
         <Box sx={{ display: "grid", placeItems: "center", minHeight: "80vh", px: 2 }}>
             <Paper component="form" onSubmit={handleSubmit} sx={{ p: 4, width: "100%", maxWidth: 380, display: "grid", gap: 2 }}>
                 <Typography variant="h5" align="center">Welcome to Movie Explorer</Typography>
+                <Alert severity="info">
+                    Demo : log in with <strong>any username</strong> and any password of at
+                    least 4 characters (for example, <em>demo</em> / <em>1234</em>).
+                </Alert>
                 {error && <Alert severity="error">{error}</Alert>}
                 <TextField label="Username" value={username} onChange={(e) => setUsername(e.target.value)} autoFocus />
                 <TextField label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
